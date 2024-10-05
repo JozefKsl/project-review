@@ -8,8 +8,12 @@ export class DatabaseImpl implements Database {
         private reviewTableName: string
     ) {}
 
-    public async updateStatsAfterReview(eventType: string, productId: number, reviewId: number, rating: number): Promise<void> {
-
+    public async updateStatsAfterReview(
+        eventType: string,
+        productId: number,
+        reviewId: number,
+        rating: number
+    ): Promise<void> {
         await this.client.transaction(async (trx) => {
             const [stats] = await trx(this.statsTableName)
                 .where({ productId })
@@ -17,7 +21,8 @@ export class DatabaseImpl implements Database {
 
             if (eventType === 'CREATE') {
                 if (stats) {
-                    const newTotalRatingPoints = stats.totalRatingPoints + rating;
+                    const newTotalRatingPoints =
+                        stats.totalRatingPoints + rating;
 
                     const newReviewCount = stats.reviewCount + 1;
                     const newAvgRating = newTotalRatingPoints / newReviewCount;
@@ -35,37 +40,40 @@ export class DatabaseImpl implements Database {
                         avgRating: rating,
                     });
                 }
-            }
-           
-            else if (eventType === 'UPDATE') {
+            } else if (eventType === 'UPDATE') {
                 const oldReview = await this.getOldReview(reviewId);
                 const oldRating = oldReview ? oldReview.rating : 0;
 
                 if (stats) {
-                    const newTotalRatingPoints = stats.totalRatingPoints - oldRating + rating;
+                    const newTotalRatingPoints =
+                        stats.totalRatingPoints - oldRating + rating;
 
-                    const newAvgRating = newTotalRatingPoints / stats.reviewCount;
+                    const newAvgRating =
+                        newTotalRatingPoints / stats.reviewCount;
 
                     await trx(this.statsTableName).where({ productId }).update({
                         totalRatingPoints: newTotalRatingPoints,
                         avgRating: newAvgRating,
                     });
                 }
-            }
+            } else if (eventType === 'DELETE') {
 
             /**
              * TODO: totalRatingPoints are not being updated correctly
              */
-            else if (eventType === 'DELETE') {
                 const oldReview = await this.getOldReview(reviewId);
                 const oldRating = oldReview ? oldReview.rating : 0;
 
                 if (stats) {
-                    const newTotalRatingPoints = stats.totalRatingPoints - oldRating;
+                    const newTotalRatingPoints =
+                        stats.totalRatingPoints - oldRating;
 
                     const newReviewCount = Math.max(stats.reviewCount - 1, 0);
 
-                    const newAvgRating = newReviewCount > 0 ? newTotalRatingPoints / newReviewCount : 0;
+                    const newAvgRating =
+                        newReviewCount > 0
+                            ? newTotalRatingPoints / newReviewCount
+                            : 0;
 
                     await trx(this.statsTableName).where({ productId }).update({
                         reviewCount: newReviewCount,

@@ -3,6 +3,7 @@ export type ProductDto = {
     name: string;
     description: string | null;
     price: number;
+    avgRating: number;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -16,4 +17,11 @@ export type ReviewDto = {
     productId: number;
     createdAt: Date;
     updatedAt: Date;
+};
+
+export type Stats = {
+    productId: number;
+    avgRating: number;
+    reviewCount: number;
+    totalRatingPoints: number;
 };

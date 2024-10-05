@@ -15,13 +15,12 @@ const main = async () => {
         process.env.REVIEW_TABLE_NAME || 'review'
     );
 
-    const service = new RatingServiceImpl(database)
+    const service = new RatingServiceImpl(database);
 
     broker.consumeFromQueue(async (message) => {
         const parsedMessage = JSON.parse(message.content);
 
-
-        await service.updateRating(parsedMessage)
+        await service.updateRating(parsedMessage);
 
         console.log('Received message:', parsedMessage);
     });

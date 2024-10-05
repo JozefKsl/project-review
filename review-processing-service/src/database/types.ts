@@ -16,4 +16,4 @@ export type StatsDto = {
     reviewCount: number;
     totalRatingPoints: number;
     avgRating: number;
-}
+};

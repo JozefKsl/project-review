@@ -1,3 +1,1 @@
-export interface RatingService {
-    
-}
+export interface RatingService {}

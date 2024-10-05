@@ -1,6 +1,6 @@
 import { Broker } from '../broker/broker';
 import { Database } from '../database/database';
-import { ProductDto } from '../database/types';
+import { ProductDto, Stats } from '../database/types';
 import { ProductService } from './productService';
 import { Product, ProductBase, Review } from './types';
 
@@ -34,6 +34,7 @@ export class ProductServiceImpl implements ProductService {
 
     public async getProduct(productId: number): Promise<Product> {
         const retrievedProduct = await this.database.getProduct(productId);
+
         return this.mapProduct(retrievedProduct);
     }
 
@@ -48,6 +49,7 @@ export class ProductServiceImpl implements ProductService {
             name: product.name,
             description: product.description,
             price: product.price,
+            averageRating: product?.avgRating ?? 0,
         };
 
         return mappedProduct;

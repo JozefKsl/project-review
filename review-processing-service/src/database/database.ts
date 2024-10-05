@@ -1,5 +1,10 @@
-import { ReviewEventType } from "../services/types";
+import { ReviewEventType } from '../services/types';
 
 export interface Database {
-    updateStatsAfterReview(eventType: ReviewEventType, productId: number, reviewId: number, rating: number): Promise<void>;
+    updateStatsAfterReview(
+        eventType: ReviewEventType,
+        productId: number,
+        reviewId: number,
+        rating: number
+    ): Promise<void>;
 }

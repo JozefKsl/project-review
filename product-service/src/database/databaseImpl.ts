@@ -1,12 +1,13 @@
 import { Knex } from 'knex';
 import { Database } from './database';
-import { ProductDto, ReviewDto } from './types';
+import { ProductDto, ReviewDto, Stats } from './types';
 
 export class DatabaseImpl implements Database {
     constructor(
         private client: Knex,
         private productTableName: string,
-        private reviewTableName: string
+        private reviewTableName: string,
+        private statsTableName: string
     ) {}
 
     public async createProduct(
@@ -42,14 +43,32 @@ export class DatabaseImpl implements Database {
 
     public async getProduct(productId: number): Promise<ProductDto> {
         const product = await this.client(this.productTableName)
-            .where({ id: productId })
+            .select(
+                `${this.productTableName}.*`,
+                `${this.statsTableName}.avgRating as avgRating`
+            )
+            .innerJoin(
+                `${this.statsTableName}`,
+                `${this.statsTableName}.productId`,
+                `${this.productTableName}.id`
+            )
+            .where({ [`${this.productTableName}.id`]: productId })
             .first();
 
         return product;
     }
 
     public async listProducts(): Promise<ProductDto[]> {
-        return await this.client(this.productTableName).select('*');
+        return await this.client(this.productTableName)
+            .select(
+                `${this.productTableName}.*`,
+                `${this.statsTableName}.avgRating as avgRating`
+            )
+            .leftJoin(
+                `${this.statsTableName}`,
+                `${this.statsTableName}.productId`,
+                `${this.productTableName}.id`
+            );
     }
 
     public async listReviewsForProduct(
@@ -76,7 +95,7 @@ export class DatabaseImpl implements Database {
             .where({ id: reviewId })
             .delete()
             .returning('*');
-        
+
         return deletedReview;
     }
 

@@ -13,7 +13,8 @@ export const initServices = async () => {
     const database = new DatabaseImpl(
         db,
         process.env.PRODUCT_TABLE_NAME || 'product',
-        process.env.REVIEW_TABLE_NAME || 'review'
+        process.env.REVIEW_TABLE_NAME || 'review',
+        process.env.STATS_TABLE_NAME || 'stats'
     );
 
     const broker = await BrokerImpl.create(
