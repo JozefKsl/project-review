@@ -1,0 +1,94 @@
+Create Product
+
+bash
+
+curl -X POST http://localhost:3001/product \
+     -H "Content-Type: application/json" \
+     -d '{
+          "name": "Sample Product",
+          "description": "This is a sample product.",
+          "price": 19.99
+     }'
+
+List Products
+
+bash
+
+curl -X GET http://localhost:3001/product
+
+Get Product by ID
+
+Replace PRODUCT_ID with the actual product ID.
+
+bash
+
+curl -X GET http://localhost:3001/product/PRODUCT_ID
+
+Update Product by ID
+
+Replace PRODUCT_ID with the actual product ID.
+
+bash
+
+curl -X PUT http://localhost:3001/product/PRODUCT_ID \
+     -H "Content-Type: application/json" \
+     -d '{
+          "name": "Updated Product Name",
+          "description": "Updated description for the product.",
+          "price": 24.99
+     }'
+
+Delete Product by ID
+
+Replace PRODUCT_ID with the actual product ID.
+
+bash
+
+curl -X DELETE http://localhost:3001/product/PRODUCT_ID
+
+Create Review
+
+Replace PRODUCT_ID with the actual product ID.
+
+bash
+
+curl -X POST http://localhost:3001/review \
+     -H "Content-Type: application/json" \
+     -d '{
+          "productId": PRODUCT_ID,
+          "firstName": "John",
+          "lastName": "Doe",
+          "reviewText": "Great product!",
+          "rating": 5
+     }'
+
+List Reviews for Product
+
+Replace PRODUCT_ID with the actual product ID.
+
+bash
+
+curl -X GET http://localhost:3001/review/PRODUCT_ID
+
+Update Review
+
+Replace REVIEW_ID with the actual review ID.
+
+bash
+
+curl -X PUT http://localhost:3001/review/REVIEW_ID \
+     -H "Content-Type: application/json" \
+     -d '{
+          "firstName": "Jane",
+          "lastName": "Doe",
+          "reviewText": "Updated review text.",
+          "rating": 4
+     }'
+
+Delete Review
+
+Replace REVIEW_ID with the actual review ID.
+
+bash
+
+curl -X DELETE http://localhost:3001/productReviews/REVIEW_ID
