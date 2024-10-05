@@ -57,10 +57,9 @@ export class DatabaseImpl implements Database {
                     });
                 }
             } else if (eventType === 'DELETE') {
-
-            /**
-             * TODO: totalRatingPoints are not being updated correctly
-             */
+                /**
+                 * TODO: totalRatingPoints are not being updated correctly
+                 */
                 const oldReview = await this.getOldReview(reviewId);
                 const oldRating = oldReview ? oldReview.rating : 0;
 

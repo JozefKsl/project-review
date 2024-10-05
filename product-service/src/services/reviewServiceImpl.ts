@@ -1,6 +1,7 @@
 import { Broker } from '../broker/broker';
 import { Database } from '../database/database';
 import { ReviewDto } from '../database/types';
+import { Cache } from '../cache/cache';
 import { ReviewService } from './reviewService';
 import {
     Review,
@@ -20,7 +21,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class ReviewServiceImpl implements ReviewService {
     constructor(
         private database: Database,
-        private broker: Broker
+        private broker: Broker,
+        private cache: Cache
     ) {}
 
     public async createReview(review: ReviewBase): Promise<Review> {
@@ -34,7 +36,7 @@ export class ReviewServiceImpl implements ReviewService {
 
     public async deleteReview(reviewId: number): Promise<number> {
         const deletedReview = await this.database.deleteReview(reviewId);
-        console.log(deletedReview);
+
         const mappedReview = this.mapReview(deletedReview);
 
         await this.publishEvent(ReviewEventType.DELETE, mappedReview);
@@ -58,7 +60,17 @@ export class ReviewServiceImpl implements ReviewService {
     }
 
     public async listReviews(productId: number): Promise<Review[]> {
+        const cachedReviews = await this.cache.get<Review[]>(String(productId));
+
+        if (cachedReviews !== null) {
+            return cachedReviews;
+        }
+
         const reviews = await this.database.listReviewsForProduct(productId);
+        const mappedReviews = reviews.map(this.mapReview);
+
+        await this.cache.set(String(productId), mappedReviews, 120);
+
         return reviews.map(this.mapReview);
     }
 

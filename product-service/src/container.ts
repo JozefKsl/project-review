@@ -1,7 +1,9 @@
 import { DatabaseImpl } from './database/databaseImpl';
+import { CacheImpl } from './cache/cacheImpl';
 import { ProductServiceImpl } from './services/productServiceImpl';
 import { ReviewServiceImpl } from './services/reviewServiceImpl';
-import db from './db';
+import db from './dbClient';
+import cacheClient from './cacheClient';
 import { BrokerImpl } from './broker/brokerImpl';
 import { ProductService } from './services/productService';
 import { ReviewService } from './services/reviewService';
@@ -22,8 +24,10 @@ export const initServices = async () => {
         process.env.RABBIT_MQ_QUEUE_NAME || 'myQueue'
     );
 
-    (productService = new ProductServiceImpl(database)),
-        (reviewService = new ReviewServiceImpl(database, broker));
+    const cacheImpl = new CacheImpl(cacheClient);
+
+    productService = new ProductServiceImpl(database);
+    reviewService = new ReviewServiceImpl(database, broker, cacheImpl);
 };
 
 export { productService, reviewService };
