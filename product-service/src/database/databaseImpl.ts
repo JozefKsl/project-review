@@ -68,12 +68,15 @@ export class DatabaseImpl implements Database {
         return createdReview;
     }
 
+    /**
+     * TODO: handle a case when the review doesn't exist in the database
+     */
     public async deleteReview(reviewId: number): Promise<ReviewDto> {
         const [deletedReview] = await this.client(this.reviewTableName)
             .where({ id: reviewId })
             .delete()
             .returning('*');
-
+        
         return deletedReview;
     }
 

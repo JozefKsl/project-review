@@ -34,6 +34,7 @@ export class ReviewServiceImpl implements ReviewService {
 
     public async deleteReview(reviewId: number): Promise<number> {
         const deletedReview = await this.database.deleteReview(reviewId);
+        console.log(deletedReview)
         const mappedReview = this.mapReview(deletedReview);
 
         await this.publishEvent(ReviewEventType.DELETE, mappedReview);
@@ -79,6 +80,7 @@ export class ReviewServiceImpl implements ReviewService {
             lastName: reviewDto.lastName,
             reviewText: reviewDto.reviewText,
             rating: reviewDto.rating,
+            productId: reviewDto.productId
         };
     }
 }

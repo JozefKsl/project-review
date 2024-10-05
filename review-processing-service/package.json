@@ -1,5 +1,5 @@
 {
-    "name": "product-review",
+    "name": "review-processing-service",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -7,24 +7,19 @@
         "dev": "ts-node-dev src/app.ts",
         "build": "tsc",
         "format": "prettier --write .",
-        "start": "node dist/app.js",
-        "migrate": "ts-node -r tsconfig-paths/register node_modules/.bin/knex migrate:latest --knexfile knexfile.ts",
-        "migrate:rollback": "ts-node -r tsconfig-paths/register node_modules/.bin/knex migrate:rollback --knexfile knexfile.ts",
-        "seed": "ts-node -r tsconfig-paths/register node_modules/.bin/knex seed:run --knexfile knexfile.ts"
+        "start": "node dist/app.js"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "amqplib": "^0.10.4",
-        "express": "^4.21.0",
         "knex": "^3.1.0",
         "pg": "^8.13.0",
         "uuid": "^10.0.0"
     },
     "devDependencies": {
         "@types/amqplib": "^0.10.5",
-        "@types/express": "^5.0.0",
         "@types/knex": "^0.16.1",
         "@types/node": "^22.7.4",
         "@types/pg": "^8.11.10",

@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "outDir": "./dist",
+        "rootDir": "product-review/review-processing-service/src"
+    },
+    "include": ["product-review/review-processing-service/src/**/*.ts"],
+    "exclude": ["product-review/review-processing-service/node_modules"]
+}

@@ -6,8 +6,8 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "outDir": "./dist",
-        "rootDir": "./src"
+        "rootDir": "product-review/product-service/src"
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules"]
+    "include": ["product-review/product-service/src/**/*.ts"],
+    "exclude": ["product-review/product-service/node_modules"]
 }

@@ -91,4 +91,4 @@ Replace REVIEW_ID with the actual review ID.
 
 bash
 
-curl -X DELETE http://localhost:3001/productReviews/REVIEW_ID
+curl -X DELETE http://localhost:3001/review/REVIEW_ID

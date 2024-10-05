@@ -11,18 +11,6 @@ export enum ReviewEventType {
     DELETE = 'DELETE',
 }
 
-export type ProductBase = {
-    name: string;
-    description: string | null;
-    price: number;
-    reviews?: Review[];
-};
-
-export type Product = {
-    id: number;
-    averageRating?: number;
-} & ProductBase;
-
 export type ReviewBase = {
     firstName: string;
     lastName: string;
@@ -32,4 +20,5 @@ export type ReviewBase = {
 
 export type Review = {
     id: number;
+    productId: number;
 } & ReviewBase;
