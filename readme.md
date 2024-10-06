@@ -81,6 +81,63 @@ This project is a two-service system responsible for managing product inventorie
 
 ---
 
+## Data Models
+
+This project includes three primary data models: **Product**, **Review**, and **Stats**. Each model is designed to facilitate efficient data management and retrieval for product inventory and review metrics.
+
+### 1. Product Model
+
+| Column Name   | Data Type    | Constraints       | Description                                |
+|---------------|--------------|-------------------|--------------------------------------------|
+| `id`          | Integer      | Primary Key       | Unique identifier for each product.       |
+| `name`        | String       | Not Nullable      | The name of the product.                  |
+| `description` | Text         |                   | A detailed description of the product.    |
+| `price`       | Decimal      | Not Nullable      | The price of the product (max 10 digits, 2 decimal places). |
+| `created_at`  | Timestamp    |                   | Timestamp for when the product was created. |
+| `updated_at`  | Timestamp    |                   | Timestamp for when the product was last updated. |
+
+- **Purpose**: The `product` table stores essential details about each product available in the inventory, including its name, description, and price.
+- **Rationale**:
+  - The use of `id` as a primary key ensures that each product can be uniquely identified.
+  - The `name` and `price` fields are marked as not nullable to guarantee that all products have a name and price, essential attributes for any inventory system.
+  - The `timestamps` feature automatically tracks when products are created and updated, allowing for better auditability and management.
+
+### 2. Review Model
+
+| Column Name    | Data Type    | Constraints       | Description                                      |
+|----------------|--------------|-------------------|--------------------------------------------------|
+| `id`           | Integer      | Primary Key       | Unique identifier for each review.               |
+| `firstName`    | String       | Not Nullable      | The first name of the reviewer.                  |
+| `lastName`     | String       | Not Nullable      | The last name of the reviewer.                   |
+| `reviewText`   | Text         | Not Nullable      | The content of the review.                       |
+| `rating`       | Integer      | Not Nullable, Check (1-5) | The rating given by the reviewer (1-5 scale). |
+| `productId`    | Integer      | Foreign Key       | References `id` in the product table.           |
+| `created_at`   | Timestamp    |                   | Timestamp for when the review was created.      |
+| `updated_at`   | Timestamp    |                   | Timestamp for when the review was last updated. |
+
+- **Purpose**: The `review` table captures customer feedback for each product, including the reviewer's name, review content, and a rating score.
+- **Rationale**:
+  - By linking reviews to products via the `productId` foreign key, we maintain referential integrity; if a product is deleted, its associated reviews are automatically removed (`onDelete('CASCADE')`).
+  - The `check` constraint on the `rating` field ensures that ratings are restricted to a valid range (1-5), promoting data consistency. 
+
+### 3. Stats Model
+
+| Column Name             | Data Type    | Constraints       | Description                                   |
+|-------------------------|--------------|-------------------|-----------------------------------------------|
+| `productId`             | Integer      | Primary Key, Foreign Key | References `id` in the product table.   |
+| `avgRating`             | Float        | Not Nullable, Default (0) | The average rating of the product.       |
+| `reviewCount`           | Integer      | Not Nullable, Default (0) | The total number of reviews for the product. |
+| `totalRatingPoints`     | Integer      | Not Nullable, Default (0) | The sum of all rating points for the product. |
+
+- **Purpose**: The `stats` table precomputes and stores aggregated metrics related to product reviews, such as average rating, total number of reviews, and total rating points.
+- **Rationale**:
+  - Precomputing metrics in the `stats` table is efficient for performance, as it avoids the need to recalculate these values every time they are requested. This is particularly beneficial when displaying product ratings and review counts on product pages.
+  - Storing these metrics reduces database load, as complex queries that involve aggregating large sets of review data can be expensive in terms of performance.
+  - Having a dedicated stats table allows for quicker access to essential data that can enhance user experience by providing real-time insights into product performance.
+
+
+---
+
 ## How to Run the Project
 
 ### Prerequisites
