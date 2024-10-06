@@ -121,3 +121,6 @@ This project is a two-service system responsible for managing product inventorie
 - No unit test coverage is provided at this stage.
 - Bash scripts are available in `product-review/test-scripts` to manually test each endpoint.
 
+Testing example
+
+![alt text](testingResults.png)
